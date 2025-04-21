@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petition to Reschedule Second Break</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .petition-text {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+        }
+        .petition-text h2 {
+            margin-top: 0;
+        }
+        .signature-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .signatures-list {
+            margin-top: 20px;
+            border: 1px solid #eee;
+            padding: 15px;
+            background-color: #f5f5f5;
+        }
+        .signatures-list h3 {
+            margin-top: 0;
+        }
+        .signature-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        .signature-item:last-child {
+            border-bottom: none;
+        }
+        #download-button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        #download-button:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="petition-text">
+        <h2>Petition to Reschedule Second Break from 01:00 AM to 02:00 AM</h2>
+        <p>Respected Managers,</p>
+        <p>We, the associates of the C-Rex department, would like to respectfully request a change in the timing of the second break from 01:00 AM to 02:00 AM.</p>
+        <h3>Reason for the Request:</h3>
+        <p>The current after the second break schedule results in a continuous work period of approximately 3 hours and 15 minutes from 1:30 AM to 4:15 AM. This extended stretch found to be mentally and physically exhausting, leading to stress and a noticeable dip in productivity during the latter part of the shift.</p>
+        <p>By rescheduling the second break to 02:00 AM, we aim to:</p>
+        <ul>
+            <li>Distribute the workload more evenly throughout the shift</li>
+            <li>Reduce fatigue and improve focus during the last working hours</li>
+            <li>Support the well-being and performance of the team</li>
+        </ul>
+        <p>We believe this change will contribute positively to both productivity and associate morale. We kindly request your consideration and are open to discussing this further.</p>
+        <p>Thank you for your time and support.</p>
+        <p>Sincerely,</p>
+        <p>C-Rex Department</p>
+    </div>
+
+    <div class="signature-area">
+        <h3>Sign the Petition</h3>
+        <form id="signature-form">
+            <div class="form-group">
+                <label for="login-id">Login ID:</label>
+                <input type="text" id="login-id" name="login-id" required>
+            </div>
+            <div class="form-group">
+                <label for="signature">Signature:</label>
+                <input type="text" id="signature" name="signature" placeholder="Your Name" required>
+            </div>
+            <button type="submit">Sign Petition</button>
+        </form>
+    </div>
+
+    <div class="signatures-list">
+        <h3>Signatures</h3>
+        <ul id="signatures">
+            </ul>
+    </div>
+
+    <button id="download-button">Download Signatures</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signatureForm = document.getElementById('signature-form');
+            const signaturesList = document.getElementById('signatures');
+            const downloadButton = document.getElementById('download-button');
+            let signaturesData = []; // Array to store signature objects
+
+            signatureForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const loginIdInput = document.getElementById('login-id');
+                const signatureInput = document.getElementById('signature');
+                const loginId = loginIdInput.value.trim();
+                const signature = signatureInput.value.trim();
+
+                if (loginId && signature) {
+                    signaturesData.push({ loginId: loginId, signature: signature });
+                    renderSignatures();
+                    loginIdInput.value = '';
+                    signatureInput.value = '';
+                } else {
+                    alert('Please enter both your Login ID and Signature.');
+                }
+            });
+
+            function renderSignatures() {
+                signaturesList.innerHTML = '';
+                signaturesData.forEach(signatory => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('signature-item');
+                    listItem.textContent = `Login ID: ${signatory.loginId}, Signature: ${signatory.signature}`;
+                    signaturesList.appendChild(listItem);
+                });
+            }
+
+            downloadButton.addEventListener('click', function() {
+                if (signaturesData.length === 0) {
+                    alert('No signatures to download.');
+                    return;
+                }
+
+                const filename = 'petition_signatures.csv';
+                let csvContent = 'Login ID,Signature\n'; // Add CSV headers
+
+                signaturesData.forEach(signatory => {
+                    csvContent += `${signatory.loginId},"${signatory.signature}"\n`;
+                });
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+                if (navigator.msSaveBlob) { // For IE and Edge
+                    navigator.msSaveBlob(blob, filename);
+                } else {
+                    const link = document.createElement('a');
+                    if (link.download !== undefined) { // Browsers that support HTML5 download attribute
+                        const url = URL.createObjectURL(blob);
+                        link.setAttribute('href', url);
+                        link.setAttribute('download', filename);
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    } else {
+                        // Fallback for browsers that don't support the download attribute
+                        window.open('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+                    }
+                }
+            });
+
+            // Initial rendering of signatures (if any were loaded - in this client-side example, none initially)
+            renderSignatures();
+        });
+    </script>
+
+</body>
+</html>
