@@ -12,17 +12,20 @@
         }
         h2 {
             color: #333;
+            font-family: "Bookman Old Style", serif; /* Apply to heading as well if desired */
         }
         .petition-content {
             margin-bottom: 20px;
             border: 1px solid #ccc;
             padding: 15px;
             border-radius: 5px;
+            font-family: "Bookman Old Style", serif; /* Apply to content */
         }
         .signature-section {
             margin-top: 20px;
             border-top: 1px dashed #bbb;
             padding-top: 15px;
+            font-family: "Bookman Old Style", serif; /* Apply to signature section */
         }
         .signature-item {
             margin-bottom: 10px;
@@ -31,6 +34,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            font-family: "Bookman Old Style", serif; /* Apply to labels */
         }
         .signature-item input[type="text"] {
             width: calc(100% - 12px);
@@ -38,10 +42,12 @@
             border: 1px solid #ddd;
             border-radius: 3px;
             box-sizing: border-box;
+            font-family: "Bookman Old Style", serif; /* Apply to input fields */
         }
         .download-section {
             margin-top: 30px;
             text-align: center;
+            font-family: "Bookman Old Style", serif; /* Apply to download section */
         }
         button {
             padding: 10px 20px;
@@ -51,6 +57,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            font-family: "Bookman Old Style", serif; /* Apply to button text */
         }
         button:hover {
             background-color: #0056b3;
@@ -65,6 +72,7 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0,0,0,0.4);
+            font-family: "Bookman Old Style", serif; /* Apply to modal */
         }
         .modal-content {
             background-color: #fefefe;
@@ -74,12 +82,14 @@
             width: 80%;
             border-radius: 5px;
             position: relative;
+            font-family: "Bookman Old Style", serif; /* Apply to modal content */
         }
         .close-button {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            font-family: sans-serif; /* Use a standard font for the close button */
         }
         .close-button:hover,
         .close-button:focus {
@@ -94,6 +104,7 @@
             border-radius: 3px;
             width: calc(100% - 22px);
             box-sizing: border-box;
+            font-family: "Bookman Old Style", serif; /* Apply to password input */
         }
         .password-submit {
             padding: 10px 20px;
@@ -103,6 +114,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            font-family: "Bookman Old Style", serif; /* Apply to submit button */
         }
         .password-submit:hover {
             background-color: #1e7e34;
@@ -114,8 +126,7 @@
     <h2>Petition to Reschedule Second Break</h2>
 
     <div class="petition-content">
-        <h3</h3>
-        <p><strong>Sub:Petition to Reschedule Second Break from 01:00 AM to 02:00 AM</strong></p>
+        <h3>Subject: Petition to Reschedule Second Break from 01:00 AM to 02:00 AM</h3>
         <p>Respected Managers,</p>
         <p>We, the associates of the C-Rex department, would like to respectfully request a change in the timing of the second break from 01:00 AM to 02:00 AM.</p>
         <p><strong>Reason for the Request:</strong></p>
@@ -132,7 +143,7 @@
     </div>
 
     <div class="signature-section">
-        <h3>Sign Your Petition</h3>
+        <h3>Petition Signed by</h3>
         <div class="signature-item">
             <label for="login-id">Login ID:</label>
             <input type="text" id="login-id" placeholder="Enter your Login ID">
@@ -179,16 +190,26 @@
             const passwordInput = document.getElementById("admin-password").value;
             const loginId = document.getElementById("login-id").value;
             const signature = document.getElementById("signature").value;
+            const petitionText = `Subject: Petition to Reschedule Second Break from 01:00 AM to 02:00 AM\n\nRespected Managers,\n\nWe, the associates of the C-Rex department, would like to respectfully request a change in the timing of the second break from 01:00 AM to 02:00 AM.\n\nReason for the Request:\nThe current after the second break schedule results in a continuous work period of approximately 3 hours and 15 minutes from 1:30 AM to 4:15 AM. This extended stretch found to be mentally and physically exhausting, leading to stress and a noticeable dip in productivity during the latter part of the shift. By rescheduling the second break to 02:00 AM, we aim to:\n\n* Distribute the workload more evenly throughout the shift\n* Reduce fatigue and improve focus During the last working hours\n* Support the well-being and performance of the team.\n\nWe believe this change will contribute positively to both productivity and associate morale. We kindly request your consideration and are open to discussing this further.\n\nThank you for your time and support.\n\nSincerely,\nC-Rex Department\n\nLogin ID: ${loginId}\nSignature: ${signature}`;
 
             if (passwordInput === "007") {
-                // In a real application, you would trigger a server-side download here.
-                // The server-side script would:
-                // 1. Verify the password.
-                // 2. Retrieve the loginId and signature (likely via a form submission in a real scenario).
-                // 3. Create a Word document with the petition text, the provided loginId, and signature.
-                // 4. Set the Content-Disposition header to trigger a download with a filename like "Petition_LOGINID.docx".
-                alert(`Password correct. Initiating download (simulated) with Login ID: ${loginId} and Signature: ${signature}.`);
-                // In a real scenario, you would likely redirect to a URL that generates the Word document.
+                // This is a client-side simulation. For a real download, you'd need a server-side script.
+                const filename = `Petition_${loginId}.docx`;
+                const contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+                // This part is a simplified way to trigger a download of a text-based "docx" content.
+                // Real DOCX generation is complex and requires server-side libraries.
+                const link = document.createElement('a');
+                const preformatted = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Petition</title><style>body { font-family: 'Bookman Old Style', serif; }</style></head><body><p style='font-family: \"Bookman Old Style\", serif;'>" + petitionText.replace(/\n/g, "</p><p style='font-family: \"Bookman Old Style\", serif;'>") + "</p></body></html>";
+                const blob = new Blob([preformatted], { type: contentType });
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+
+                closePasswordModal();
             } else {
                 document.getElementById("password-error").style.display = "block";
             }
