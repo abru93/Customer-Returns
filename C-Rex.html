@@ -46,10 +46,10 @@
         }
         .download-section {
             margin-top: 30px;
-            text-align: center;
+            text-align: right; /* Align download button to the right */
             font-family: "Bookman Old Style", serif; /* Apply to download section */
         }
-        button {
+        .download-button {
             padding: 10px 20px;
             background-color: #007bff;
             color: white;
@@ -59,8 +59,26 @@
             font-size: 16px;
             font-family: "Bookman Old Style", serif; /* Apply to button text */
         }
-        button:hover {
+        .download-button:hover {
             background-color: #0056b3;
+        }
+        .submit-section {
+            margin-top: 20px;
+            text-align: left; /* Align submit button to the left */
+            font-family: "Bookman Old Style", serif;
+        }
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: "Bookman Old Style", serif;
+        }
+        .submit-button:hover {
+            background-color: #1e7e34;
         }
         #password-modal {
             display: none;
@@ -99,25 +117,40 @@
         }
         .password-input {
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px; /* Increased margin for buttons */
             border: 1px solid #ccc;
             border-radius: 3px;
             width: calc(100% - 22px);
             box-sizing: border-box;
             font-family: "Bookman Old Style", serif; /* Apply to password input */
         }
-        .password-submit {
+        .modal-buttons {
+            text-align: right; /* Align buttons to the right in modal */
+        }
+        .modal-buttons button {
+            display: inline-block; /* Allows side-by-side arrangement */
+            margin-left: 10px; /* Spacing between buttons */
             padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            font-family: "Bookman Old Style", serif; /* Apply to submit button */
+            font-family: "Bookman Old Style", serif; /* Apply to modal button text */
         }
-        .password-submit:hover {
+        .modal-submit {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+        .modal-submit:hover {
             background-color: #1e7e34;
+        }
+        .modal-download {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+        .modal-download:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -154,8 +187,12 @@
         </div>
     </div>
 
+    <div class="submit-section">
+        <button class="submit-button" onclick="alert('Petition Submitted (Simulation)')">Submit</button>
+    </div>
+
     <div class="download-section">
-        <button onclick="openPasswordModal()">Download as Word (Admin)</button>
+        <button class="download-button" onclick="openPasswordModal()">Download</button>
     </div>
 
     <div id="password-modal" class="modal">
@@ -164,20 +201,27 @@
             <h3>Admin Password Required</h3>
             <label for="admin-password">Password:</label>
             <input type="password" id="admin-password" class="password-input">
-            <button onclick="verifyPassword()" class="password-submit">Download</button>
+            <div class="modal-buttons">
+                <button onclick="verifyPassword()" class="modal-submit">Submit</button>
+                <button onclick="triggerDownload()" class="modal-download">Download</button>
+            </div>
             <p id="password-error" style="color: red; display: none;">Incorrect password.</p>
         </div>
     </div>
 
     <script>
+        let isPasswordCorrect = false; // Flag to track password verification
+
         function openPasswordModal() {
             document.getElementById("password-modal").style.display = "block";
+            isPasswordCorrect = false; // Reset flag when modal opens
         }
 
         function closePasswordModal() {
             document.getElementById("password-modal").style.display = "none";
             document.getElementById("password-error").style.display = "none";
             document.getElementById("admin-password").value = "";
+            isPasswordCorrect = false; // Reset flag when modal closes
         }
 
         window.onclick = function(event) {
@@ -188,11 +232,22 @@
 
         function verifyPassword() {
             const passwordInput = document.getElementById("admin-password").value;
-            const loginId = document.getElementById("login-id").value;
-            const signature = document.getElementById("signature").value;
-            const petitionText = `Subject: Petition to Reschedule Second Break from 01:00 AM to 02:00 AM\n\nRespected Managers,\n\nWe, the associates of the C-Rex department, would like to respectfully request a change in the timing of the second break from 01:00 AM to 02:00 AM.\n\nReason for the Request:\nThe current after the second break schedule results in a continuous work period of approximately 3 hours and 15 minutes from 1:30 AM to 4:15 AM. This extended stretch found to be mentally and physically exhausting, leading to stress and a noticeable dip in productivity during the latter part of the shift. By rescheduling the second break to 02:00 AM, we aim to:\n\n* Distribute the workload more evenly throughout the shift\n* Reduce fatigue and improve focus During the last working hours\n* Support the well-being and performance of the team.\n\nWe believe this change will contribute positively to both productivity and associate morale. We kindly request your consideration and are open to discussing this further.\n\nThank you for your time and support.\n\nSincerely,\nC-Rex Department\n\nLogin ID: ${loginId}\nSignature: ${signature}`;
-
             if (passwordInput === "007") {
+                document.getElementById("password-error").style.display = "none";
+                isPasswordCorrect = true;
+                // Optionally provide feedback that the password is correct
+            } else {
+                document.getElementById("password-error").style.display = "block";
+                isPasswordCorrect = false;
+            }
+        }
+
+        function triggerDownload() {
+            if (isPasswordCorrect) {
+                const loginId = document.getElementById("login-id").value;
+                const signature = document.getElementById("signature").value;
+                const petitionText = `Subject: Petition to Reschedule Second Break from 01:00 AM to 02:00 AM\n\nRespected Managers,\n\nWe, the associates of the C-Rex department, would like to respectfully request a change in the timing of the second break from 01:00 AM to 02:00 AM.\n\nReason for the Request:\nThe current after the second break schedule results in a continuous work period of approximately 3 hours and 15 minutes from 1:30 AM to 4:15 AM. This extended stretch found to be mentally and physically exhausting, leading to stress and a noticeable dip in productivity during the latter part of the shift. By rescheduling the second break to 02:00 AM, we aim to:\n\n* Distribute the workload more evenly throughout the shift\n* Reduce fatigue and improve focus During the last working hours\n* Support the well-being and performance of the team.\n\nWe believe this change will contribute positively to both productivity and associate morale. We kindly request your consideration and are open to discussing this further.\n\nThank you for your time and support.\n\nSincerely,\nC-Rex Department\n\nLogin ID: ${loginId}\nSignature: ${signature}`;
+
                 // This is a client-side simulation. For a real download, you'd need a server-side script.
                 const filename = `Petition_${loginId}.docx`;
                 const contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -211,6 +266,7 @@
 
                 closePasswordModal();
             } else {
+                document.getElementById("password-error").textContent = "Please enter the correct password before downloading.";
                 document.getElementById("password-error").style.display = "block";
             }
         }
